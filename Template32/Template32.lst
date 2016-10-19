@@ -1,0 +1,337 @@
+Microsoft (R) Macro Assembler Version 12.00.21005.1	    04/19/16 13:36:53
+	Lab9a.as					     Page 1 - 1
+
+
+				title  Lab9a.asm
+
+				.386
+				.model flat, stdcall
+
+				;Named constants
+ = 00000064			 MAX_SIZE equ 100
+
+				;External procedure prototypes
+				 WriteHex proto
+				 ReadInt proto
+				 WriteInt proto
+				 Crlf proto
+				 WriteString proto
+				 ExitProcess proto, dwExitcode:dword
+
+				.stack 100h
+
+ 00000000			.data
+ 00000000 45 6E 74 65 72	        prompt1  byte  "Enter integers to store in an array (0 to stop): ", 0
+	   20 69 6E 74 65
+	   67 65 72 73 20
+	   74 6F 20 73 74
+	   6F 72 65 20 69
+	   6E 20 61 6E 20
+	   61 72 72 61 79
+	   20 28 30 20 74
+	   6F 20 73 74 6F
+	   70 29 3A 20 00
+ 00000032 54 68 65 20 73	        msgPos   byte  "The sum of the positive values is ", 0
+	   75 6D 20 6F 66
+	   20 74 68 65 20
+	   70 6F 73 69 74
+	   69 76 65 20 76
+	   61 6C 75 65 73
+	   20 69 73 20 00
+ 00000055 54 68 65 20 73	        msgNeg   byte  "The sum of the negative values is ", 0
+	   75 6D 20 6F 66
+	   20 74 68 65 20
+	   6E 65 67 61 74
+	   69 76 65 20 76
+	   61 6C 75 65 73
+	   20 69 73 20 00
+ 00000078 54 68 65 20 23	        msgPos2  byte  "The # of positive values is ", 0
+	   20 6F 66 20 70
+	   6F 73 69 74 69
+	   76 65 20 76 61
+	   6C 75 65 73 20
+	   69 73 20 00
+ 00000095 54 68 65 20 23	        msgNeg2  byte  "The # of negative values is ", 0
+	   20 6F 66 20 6E
+	   65 67 61 74 69
+	   76 65 20 76 61
+	   6C 75 65 73 20
+	   69 73 20 00
+				 
+ 000000B2 00000000		        numValues dword ?		;# of values stored in listA
+ 000000B6  00000064 [		        listA     sdword  MAX_SIZE dup (?)
+	    00000000
+	   ]
+ 00000246 00000000		        posSum    dword ?		;sum of positive values in listA
+ 0000024A 00000000		        posCount  dword ?		;# of positive values stored in listA	
+ 0000024E 00000000		        negSum    sdword ?		;sum of negative values stored in listA
+ 00000252 00000000		        negCount  dword ?		;# of negative values stored in listA
+
+ 00000000			.code
+ 00000000			 main proc
+					
+				     ;Print "Enter integers to store in an array (0 to stop): "
+ 00000000  BA 00000000 R	      mov edx, offset prompt1
+ 00000005  E8 00000000 E	      call WriteString
+ 0000000A  E8 00000000 E	      call Crlf
+
+				     ;FILL IN CODE to do the following procedure call
+				     ; Fill(listA, numValues)
+					 
+ 0000000F  68 000000B6 R		 push offset listA					;push on arugments
+ 00000014  FF 35 000000B2 R		 push numValues
+ 0000001A  E8 000000B1			 call Fill
+ 0000001F  8F 05 000000B2 R		 pop numValues						;return by value
+
+
+				     ;FILL IN CODE to do the following procedure call
+				     ; ComputeSums(listA, numValues, posSum, posCount, negSum, negCount)
+ 00000025  68 000000B6 R		 push offset listA
+ 0000002A  FF 35 000000B2 R		 push numValues
+ 00000030  FF 35 00000246 R		 push posSum
+ 00000036  FF 35 0000024A R		 push posCount
+ 0000003C  FF 35 0000024E R		 push negSum
+ 00000042  FF 35 00000252 R		 push negCount
+ 00000048  E8 000000A9			 call ComputeSums
+ 0000004D  8F 05 00000252 R		 pop negCount
+ 00000053  8F 05 0000024E R		 pop negSum
+ 00000059  8F 05 0000024A R		 pop posCount
+ 0000005F  8F 05 00000246 R		 pop posSum
+
+				     ;Print "The sum of the positive values is " posSum
+ 00000065  BA 00000032 R	      mov edx, offset msgPos
+ 0000006A  E8 00000000 E	      call WriteString
+ 0000006F  A1 00000246 R	      mov eax, posSum
+ 00000074  E8 00000000 E	      call WriteInt
+ 00000079  E8 00000000 E	      call Crlf
+
+				     ;Print "The # of positive values is " posCount
+ 0000007E  BA 00000078 R	      mov edx, offset msgPos2
+ 00000083  E8 00000000 E	      call WriteString
+ 00000088  A1 0000024A R	      mov eax, posCount
+ 0000008D  E8 00000000 E	      call WriteInt
+ 00000092  E8 00000000 E	      call Crlf
+
+				     ;Print "The sum of the negative values is " negSum
+ 00000097  BA 00000055 R	      mov edx, offset msgNeg
+ 0000009C  E8 00000000 E	      call WriteString
+ 000000A1  A1 0000024E R	      mov eax, negSum
+ 000000A6  E8 00000000 E	      call WriteInt
+ 000000AB  E8 00000000 E	      call Crlf
+
+				     ;Print "The # of negative values is " negCount
+ 000000B0  BA 00000095 R	      mov edx, offset msgNeg2
+ 000000B5  E8 00000000 E	      call WriteString
+ 000000BA  A1 00000252 R	      mov eax, negCount
+ 000000BF  E8 00000000 E	      call WriteInt
+ 000000C4  E8 00000000 E	      call Crlf
+
+				     ;Terminate the program
+ 000000C9  6A 00		      push 0
+ 000000CB  E8 00000000 E	      call ExitProcess
+ 000000D0			main endp
+
+				;FILL IN CODE for procedure Fill which fills an array with
+				; values which come from the user.  Fill should use a sentinel
+				; controlled loop to continue storing values until the user enters 0
+				; Fill should return the # of filled locations in the array (the
+				; sentinel should not be stored or counted)
+
+ = [ebp+24]			OFFSET_LISTA			equ			[ebp+24]				;&listA located at ebp+20
+ = [ebp+20]			NUM_VALUES				equ			[ebp+20]				;numValues located at ebp+24
+ 000000D0			Fill proc
+
+				;preserve regs
+
+ 000000D0  56			push esi									;array pointer
+ 000000D1  50			push eax									;readint 
+ 000000D2  51			push ecx									;counter reg
+ 000000D3  55			push ebp									;base stack ptr
+
+ 000000D4  8B EC		mov ebp, esp								;align stack ptrs
+ 000000D6  8B 75 18		mov esi, OFFSET_LISTA						;esi points to base of stack
+
+ 000000D9			DO1:
+
+ 000000D9  E8 00000000 E		call ReadInt
+
+					;if input == 0, exit
+ 000000DE  83 F8 00			cmp eax, 0
+ 000000E1  74 0E			je END1
+
+					;else
+ 000000E3  89 06			mov [esi], eax
+ 000000E5  83 C6 04			add esi, type listA
+ 000000E8  8B 45 14			mov eax, NUM_VALUES
+ 000000EB  40				inc eax
+ 000000EC  89 45 14			mov NUM_VALUES, eax
+ 000000EF  EB E8			jmp DO1
+
+
+ 000000F1			END1:
+				;restore regs
+ 000000F1  5D			pop ebp
+ 000000F2  59			pop ecx
+ 000000F3  58			pop eax
+ 000000F4  5E			pop esi
+
+ 000000F5  C3			ret
+ 000000F6			Fill endp
+
+
+
+				;FILL IN CODE for procedure ComputeSums which will compute and return
+				; the sum and count of the positive values stored in its
+				; array argument, and will compute and return the sum and count
+				; of the negative values stored in its array argument
+				;local constants for addressing
+ = [ebp+44]			OFFSET_LISTA		equ			[ebp+44]
+ = [ebp+40]			NUM_VALUES			equ			[ebp+40]
+ = [ebp+36]			POS_SUM				equ			[ebp+36]
+ = [ebp+32]			POS_COUNT			equ			[ebp+32]
+ = [ebp+28]			NEG_SUM				equ			[ebp+28]
+ = [ebp+24]			NEG_COUNT			equ			[ebp+24]
+
+ 000000F6			ComputeSums proc
+
+				;preserve registers
+ 000000F6  56			push esi					;array ptr
+ 000000F7  50			push eax					;used for math/storage
+ 000000F8  53			push ebx					;storage
+ 000000F9  51			push ecx					;loop counter
+ 000000FA  55			push ebp					;stack ptr
+
+ 000000FB  8B EC		mov ebp, esp				;align stack ptr
+
+ 000000FD  8B 75 2C		mov esi, OFFSET_LISTA		;points to start of listA
+ 00000100  8B 4D 28		mov ecx, NUM_VALUES
+
+ 00000103			L1:
+
+ 00000103  8B 06		mov eax, [esi]
+ 00000105  83 C6 04		add esi, type listA
+ 00000108  E8 00000000 E	call WriteInt
+ 0000010D  E8 00000000 E	call Crlf
+
+				;compare current index
+ 00000112  83 F8 00		cmp eax, 0
+ 00000115  8B D8		mov ebx, eax					;ebx will preserve current index
+
+				;jump if neg
+ 00000117  7C 11		jl negative
+
+				;greater than zero path
+
+				;modify posCount
+ 00000119  8B 45 20		mov eax, POS_COUNT				;eax = posCount
+ 0000011C  40			inc eax							;posCount++
+ 0000011D  89 45 20		mov POS_COUNT, eax				;posCount = eax
+
+				;modify posSum
+ 00000120  8B 45 24		mov eax, POS_SUM				;eax = posSum
+ 00000123  03 C3		add eax, ebx					;eax += ebx
+ 00000125  89 45 24		mov POS_SUM, eax				;posSum = eax
+
+				;exit conditional
+ 00000128  EB 0F		jmp endif1
+
+ 0000012A			negative:
+				;modify negCount
+ 0000012A  8B 45 18		mov eax, NEG_COUNT				;eax = negCount
+ 0000012D  40			inc eax
+ 0000012E  89 45 18		mov NEG_COUNT, eax
+
+				;modify negSum
+ 00000131  8B 45 1C		mov eax, NEG_SUM
+ 00000134  03 C3		add eax, ebx
+ 00000136  89 45 1C		mov NEG_SUM, eax
+
+ 00000139			endif1:
+ 00000139  E2 C8		loop L1
+
+				;restore registers
+ 0000013B  5D			pop ebp
+ 0000013C  59			pop ecx
+ 0000013D  5B			pop ebx
+ 0000013E  58			pop eax
+ 0000013F  5E			pop esi
+
+ 00000140  C3			ret
+ 00000141			ComputeSums endp
+
+
+
+
+				end main
+
+
+Microsoft (R) Macro Assembler Version 12.00.21005.1	    04/19/16 13:36:53
+	Lab9a.as					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00000100 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000256 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000141 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ComputeSums  . . . . . . . . . .	P Near	 000000F6 _TEXT	Length= 0000004B Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 00000103 _TEXT	
+  negative . . . . . . . . . . .	L Near	 0000012A _TEXT	
+  endif1 . . . . . . . . . . . .	L Near	 00000139 _TEXT	
+Crlf . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+Fill . . . . . . . . . . . . . .	P Near	 000000D0 _TEXT	Length= 00000026 Public STDCALL
+  DO1  . . . . . . . . . . . . .	L Near	 000000D9 _TEXT	
+  END1 . . . . . . . . . . . . .	L Near	 000000F1 _TEXT	
+ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteHex . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteInt . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000D0 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+MAX_SIZE . . . . . . . . . . . .	Number	 00000064h   
+NEG_COUNT  . . . . . . . . . . .	Text   	 [ebp+24]
+NEG_SUM  . . . . . . . . . . . .	Text   	 [ebp+28]
+NUM_VALUES . . . . . . . . . . .	Text   	 [ebp+40]
+OFFSET_LISTA . . . . . . . . . .	Text   	 [ebp+44]
+POS_COUNT  . . . . . . . . . . .	Text   	 [ebp+32]
+POS_SUM  . . . . . . . . . . . .	Text   	 [ebp+36]
+listA  . . . . . . . . . . . . .	DWord	 000000B6 _DATA	
+msgNeg2  . . . . . . . . . . . .	Byte	 00000095 _DATA	
+msgNeg . . . . . . . . . . . . .	Byte	 00000055 _DATA	
+msgPos2  . . . . . . . . . . . .	Byte	 00000078 _DATA	
+msgPos . . . . . . . . . . . . .	Byte	 00000032 _DATA	
+negCount . . . . . . . . . . . .	DWord	 00000252 _DATA	
+negSum . . . . . . . . . . . . .	DWord	 0000024E _DATA	
+numValues  . . . . . . . . . . .	DWord	 000000B2 _DATA	
+posCount . . . . . . . . . . . .	DWord	 0000024A _DATA	
+posSum . . . . . . . . . . . . .	DWord	 00000246 _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,14 @@
+﻿Build started 4/19/2016 1:36:53 PM.
+     1>Project "C:\Users\s_lahutj\Desktop\Lab9a\Template32\Template32.vcxproj" on node 2 (Build target(s)).
+     1>_MASM:
+         Assembling Lab9a.asm...
+         cmd.exe /C "C:\Users\s_lahutj\AppData\Local\Temp\tmp550e7596bfad4c9da8a063edcce618ea.cmd"
+         ml.exe /c /nologo /Zi /Fo"Debug\Lab9a.obj" /Fl"Template32.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /TaLab9a.asm
+       Link:
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\s_lahutj\Desktop\Lab9a\Template32\Debug\Template32.exe" /NOLOGO /LIBPATH:c:\Masm615\Lib user32.lib Irvine32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\s_lahutj\Desktop\Lab9a\Template32\Debug\Template32.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\s_lahutj\Desktop\Lab9a\Template32\Debug\Template32.lib" /MACHINE:X86 /SAFESEH:NO Debug\Lab9a.obj
+         Template32.vcxproj -> C:\Users\s_lahutj\Desktop\Lab9a\Template32\Debug\Template32.exe
+     1>Done Building Project "C:\Users\s_lahutj\Desktop\Lab9a\Template32\Template32.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.34
